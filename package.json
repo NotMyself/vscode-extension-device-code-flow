@@ -1,0 +1,38 @@
+{
+  "name": "vscode-extension-device-code-flow",
+  "displayName": "vscode-extension-device-code-flow",
+  "description": "A fully functioning demonstration of authentication and authorization for a visual studio code extension using device code flow.",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:vscode-extension-device-code-flow.helloWorld"
+  ],
+  "main": "./src/extension.js",
+  "contributes": {
+    "commands": [{
+      "command": "vscode-extension-device-code-flow.helloWorld",
+      "title": "Hello World"
+    }]
+  },
+  "scripts": {
+    "lint": "eslint .",
+    "pretest": "npm run lint",
+    "test": "node ./test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.73.0",
+    "@types/glob": "^8.0.0",
+    "@types/mocha": "^10.0.0",
+    "@types/node": "16.x",
+    "eslint": "^8.26.0",
+    "glob": "^8.0.3",
+    "mocha": "^10.1.0",
+    "typescript": "^4.8.4",
+    "@vscode/test-electron": "^2.2.0"
+  }
+}
