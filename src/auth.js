@@ -21,14 +21,12 @@ async function getClient() {
     return client;
   }
   issuer = await Issuer.discover(OIDC_CONFIG.ISSUER);
-  console.log(`Discovered issuer: ${issuer.issuer}`);
-  console.log(issuer.metadata);
+
   client = new issuer.Client({
     client_id: OIDC_CONFIG.CLIENT_ID,
-    redirect_uris: [],
-    response_types: [],
     token_endpoint_auth_method: 'none',
   });
+
   return getClient();
 }
 
@@ -43,13 +41,13 @@ async function getTokenSet() {
     }
     return tokenSet;
   }
-  return undefined;
 }
 
 async function refreshTokenSet(current) {
   console.log('auth0.auth.refreshTokenSet');
   const client = await getClient();
   const newTokenSet = await client.refresh(current);
+
   await tokenStorage.store(
     SECRET_KEY_SERVICE_NAME,
     JSON.stringify(newTokenSet)
@@ -70,6 +68,7 @@ async function silentSignIn() {
 async function getDeviceCodeAuthorization() {
   console.log('auth0.auth.getDeviceCodeAuthorization');
   const client = await getClient();
+
   return await client.deviceAuthorization({
     audience: OIDC_CONFIG.AUDIENCE,
     scope: OIDC_CONFIG.SCOPE,
@@ -78,6 +77,7 @@ async function getDeviceCodeAuthorization() {
 
 async function deviceCodeSignIn(handle, cancellationToken) {
   const abort = new AbortController();
+
   cancellationToken.onCancellationRequested(() => {
     abort.abort();
   });
@@ -87,8 +87,6 @@ async function deviceCodeSignIn(handle, cancellationToken) {
     if (!tokenSet) {
       return;
     }
-
-    console.log('Token Set: ', tokenSet);
 
     await tokenStorage.store(SECRET_KEY_SERVICE_NAME, JSON.stringify(tokenSet));
 
@@ -100,6 +98,7 @@ async function deviceCodeSignIn(handle, cancellationToken) {
 
 async function signOut() {
   console.log('auth0.auth.signOut');
+
   await tokenStorage.delete(SECRET_KEY_SERVICE_NAME);
 
   authStatusEventEmitter.fire(undefined);
@@ -108,6 +107,7 @@ async function signOut() {
 async function isAuthenticated() {
   console.log('auth0.auth.isAuthenticated');
   const tokenSet = await getTokenSet();
+
   if (tokenSet) {
     return !tokenSet.expired();
   }

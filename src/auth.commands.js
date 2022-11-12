@@ -33,14 +33,18 @@ class AuthCommands {
       await vscode.window.withProgress(
         {
           location: vscode.ProgressLocation.Notification,
-          title: `Sign in: Fetching device code.`,
+          title: `Sign in`,
           cancellable: true,
         },
         async (progress, token) => {
+          progress.report({
+            message: 'Fetching Device Code',
+          });
+
           const handle = await Auth.getDeviceCodeAuthorization();
 
           progress.report({
-            message: `Sign in: Your pairing code is ${handle.user_code}`,
+            message: `Your pairing code is ${handle.user_code}`,
           });
 
           vscode.commands.executeCommand(
