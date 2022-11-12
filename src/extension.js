@@ -1,6 +1,8 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 const vscode = require('vscode');
+const Auth = require('./auth');
+const AuthCommands = require('./auth.commands');
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -9,28 +11,44 @@ const vscode = require('vscode');
  * @param {vscode.ExtensionContext} context
  */
 function activate(context) {
+  /**
+   * Register commands & views
+   */
+  const authCommands = new AuthCommands(context.subscriptions);
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscode-extension-device-code-flow" is now active!');
+  /**
+   * Register changes in authentication to update views
+   */
+  const updateViews = async (tokenSet) => {
+    /**
+     * Set a global context item `auth0:authenticated`. This
+     * setting is used to determine what commands/views/etc are
+     * available to the user. The access token is also used
+     * when making requests from the Management API.
+     */
+    const authenticated = tokenSet && !tokenSet.expired();
+    await vscode.commands.executeCommand(
+      'setContext',
+      'auth0:authenticated',
+      authenticated
+    );
+  };
+  Auth.useStorage(context.secrets);
+  Auth.onAuthStatusChanged(updateViews);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with  registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vscode-extension-device-code-flow.helloWorld', function () {
-		// The code you place here will be executed every time your command is executed
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from vscode-extension-device-code-flow!');
-	});
-
-	context.subscriptions.push(disposable);
+  vscode.commands.executeCommand('auth0.auth.silentSignIn');
 }
 
 // This method is called when your extension is deactivated
-function deactivate() {}
+function deactivate() {
+  /**
+   * Sign out and dispose of all tokensets
+   */
+  Auth.signOut();
+  Auth.dispose();
+}
 
 module.exports = {
-	activate,
-	deactivate
-}
+  activate,
+  deactivate,
+};
