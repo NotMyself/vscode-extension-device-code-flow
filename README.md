@@ -61,3 +61,36 @@ You can author your README using Visual Studio Code.  Here are some useful edito
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
+
+### Device Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    User->>VSCode: Issue Sign In Command
+    VSCode->>Auth0 Tenant: Authorization request to /oauth/device/code
+    Auth0 Tenant->>VSCode: Device Code + User Code + Verification URL
+    VSCode->>User: Display User Code
+    VSCode->>User: Open Verification URL in Browser
+    Note over User: User switches to Browser Flow
+    loop Polling
+        VSCode->>Auth0 Tenant: Access token request to /oauth/token
+    end
+    Note over Auth0 Tenant: Once user has completed Browser Flow
+    Auth0 Tenant->>VSCode: Returns Access Token
+    VSCode->>API: Request user data with Access Token
+    API->>VSCode: Response with data
+    
+```
+
+### Browser Flow
+
+```mermaid
+sequenceDiagram
+    autonumber
+    User->>Auth0 Tenant: User Navigates to the Verification Url
+    Auth0 Tenant->>User: Redirect to login/authorization prompt
+    User->>Auth0 Tenant: User authenticates and gives consent
+    Auth0 Tenant->>User: Mark device as authorized and displays success message
+
+```
