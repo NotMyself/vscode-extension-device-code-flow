@@ -1,0 +1,10 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "intro",
+  "steps": [
+    {
+      "title": "Welcome",
+      "description": "# VSCode Extension Device Code Flow\n\nThere are a number of service based SaaS companies that offer developer tooling that integrates with common software development environments to provide interactivity with their service. For example, both [Twilio](https://marketplace.visualstudio.com/items?itemName=Twilio.vscode-twilio) and [Vonage](https://marketplace.visualstudio.com/items?itemName=Vonage.vscode) have Visual Studio Code Extensions. A common pattern for authorization is to have the user retrieve an API key from the service and configure the developer tool using it.\n\nThis can lead to the propagation of API keys in insecure ways where the keys is exposed to leakage and usage in ways they were not issued for specifically. A better solution would be to require the user to communicate with an authorization server to gain access to the API in a limited secure way that does not expose the API keys outside of the running instance of the developer tool.\n\nThis repository is intended to demonstrate the use of the [OAuth 2.0 Device Authorization Grant](https://www.rfc-editor.org/rfc/rfc8628.html) to authenticate the user and authorize api access.\n"
+    }
+  ]
+}
