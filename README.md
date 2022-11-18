@@ -99,7 +99,7 @@ sequenceDiagram
 First clone the repository and install needed dependencies.
 
 ```
-git clone https://github.com/auth0-training/labs-vscode-extension.git
+git clone git@github.com:NotMyself/vscode-extension-device-code-flow.git
 cd labs-vscode-extension
 npm install
 ```
