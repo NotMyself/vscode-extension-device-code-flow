@@ -93,9 +93,3 @@ sequenceDiagram
 
  - abort-controller
  - openid-client
-
-## Considerations/Concerns
-
-### Known Issues and Risks
-
-### Expected Maintenance
