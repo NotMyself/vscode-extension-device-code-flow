@@ -93,3 +93,16 @@ sequenceDiagram
 
  - abort-controller
  - openid-client
+
+### Using this Sample
+
+First clone the repository and install needed dependencies.
+
+```
+git clone https://github.com/auth0-training/labs-vscode-extension.git
+cd labs-vscode-extension
+npm install
+```
+Open the repository as a folder in Visual Studio Code and
+ under the Debug Tab, select `Run Extension`.
+![Debug Run Extension](resources/debug-run-extension.png)
